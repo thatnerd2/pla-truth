@@ -1,0 +1,54 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aaron's Collection of Things</title>
+    <link rel="stylesheet" href="/css/foundation.min.css" />
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="/js/modernizr.js"></script>
+    <script src="/js/foundation.min.js"></script>
+    
+  </head>
+  <body>
+    <div id="hidden"></div>
+    
+  
+  <script type="text/javascript">
+
+
+  var pla = new Phaser.pla(PLA_WIDTH, pla_HEIGHT, Phaser.AUTO, 'pla');
+  pla.state.add("pla", plaState);
+  pla.state.start("pla");
+
+  var plaState = function (pla) {}
+
+  plaState.prototype = {
+    preload: function () {
+      console.log("RPRELOAD!");
+    },
+
+    create: function () {
+      pla.stage.backgroundColor = 0xFFFFFF;
+      pla.add.text(PLA_WIDTH/3, 100, "Mission " + level, {size: "48px", fille: "#FFF", align: "center"});
+      pla.add.text(PLA_WIDTH/3, 150, "Lives left: " + PLAYER_LIVES, {size: "48px", fille: "#FFF", align: "center"});
+      var playButton = pla.add.button(250, 300, 'play-button', this.startNextMission, this);
+      pla.time.advancedTiming = true;
+    },
+
+    update: function () {
+      pla.debug.text(pla.time.fps, 2, 14, "#00ff00");
+    },
+
+    startNextMission: function () {
+      if (isMultiplayer) {
+        server.readyForNextMission(clientId);
+        pla.add.text(250, 300, "Waiting for other player...", {size: "48px", fille: "#FFF", align: "center"});
+      }
+      else pla.state.start("play-state");
+    }
+  }
+
+  </script>
+  </body>
+</html>
